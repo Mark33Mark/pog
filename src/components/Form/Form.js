@@ -5,7 +5,7 @@ import FileBase64 from "react-file-base64";
 import PogTitle from "../../assets/images/pog";
 import "./Form.css";
 
-const UPLOAD_FILE_SIZE_LIMIT = 5000;
+const UPLOAD_FILE_SIZE_LIMIT = 2000;
 
 const cleanForm = {
   creator: "",
