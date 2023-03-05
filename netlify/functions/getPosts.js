@@ -1,17 +1,19 @@
 const mongoose = require('mongoose');
-const PostMessage = require( './utils/postMessage' );
+const PostMessage = require('./utils/postMessage').postSchema;
+const constants = require("./utils/constants");
 
 let conn = null;
-const uri = process.env.MONGODB_URI;
 
 exports.handler = async (event, context, callback) => {
 
   //allows app to re-use `conn` between function calls.
   context.callbackWaitsForEmptyEventLoop = false;
 
-  if (conn == null) {
+  if (conn === null) {
 
-    conn = mongoose.createConnection(uri, {
+    const { uri } = constants;
+
+    conn = mongoose.createConnection( uri, {
       // and tell the MongoDB driver to not wait more than 5 seconds
       // before erroring out if it isn't connected
       serverSelectionTimeoutMS: 5000
@@ -21,7 +23,7 @@ exports.handler = async (event, context, callback) => {
     // to avoid multiple function calls creating new connections
     await conn.asPromise();
 
-    conn.model('postmessages', mongoose.Schema(PostMessage.postSchema));
+    conn.model('postmessages', mongoose.Schema(PostMessage));
   }
 
   const posts = conn.model('postmessages');
